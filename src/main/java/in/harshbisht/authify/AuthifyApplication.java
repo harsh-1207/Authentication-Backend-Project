@@ -11,3 +11,6 @@ public class AuthifyApplication {
 	}
 
 }
+
+// this branch only has the functionality till point 13
+// this is all before adding email functionality (login and get back JWT token)
