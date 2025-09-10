@@ -2,6 +2,7 @@ package in.harshbisht.authify.controller;
 
 import in.harshbisht.authify.io.ProfileRequest;
 import in.harshbisht.authify.io.ProfileResponse;
+import in.harshbisht.authify.service.EmailService;
 import in.harshbisht.authify.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,15 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
+    private final EmailService emailService;
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ProfileResponse register(@Valid @RequestBody ProfileRequest request) {
         ProfileResponse response = profileService.createProfile(request);
 
         // To Do : send welcome email
+        emailService.sendWelcomeEmail(response.getEmail(), response.getName());
 
         return response;
     }
@@ -29,5 +33,4 @@ public class ProfileController {
     public ProfileResponse getProfile(@CurrentSecurityContext(expression = "authentication?.name") String email) {
         return profileService.getProfile(email);
     }
-
 }
